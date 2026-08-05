@@ -53,5 +53,59 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+function generateFirstNTerms(n) {
+  const res = [];
+  if (n <= 0) return res;
+  res.push(0);
+  if (n === 1) return res;
+  res.push(1);
+  for (let i = 2; i < n; i++) {
+	res.push(res[i - 1] + res[i - 2]);
+  }
+  return res;
+}
 
+function isFibonacciNumber(x) {
+  if (x < 0) return false;
+  if (x === 0) return true;
+  // Generate until >= x
+  let a = 0, b = 1;
+  while (b < x) {
+	const tmp = a + b;
+	a = b;
+	b = tmp;
+  }
+  return b === x;
+}
+
+function partA() {
+  const n = readlineSync.questionInt('How many terms? ');
+  if (n <= 0) {
+	console.log('Error: N must be a positive integer.');
+	return;
+  }
+  const seq = generateFirstNTerms(n);
+  console.log(`Fibonacci sequence: ${seq.join(' ')}`);
+}
+
+function partB() {
+  const num = Number(readlineSync.question('Enter a number to check: '));
+  if (Number.isNaN(num)) {
+	console.log('Error: invalid number.');
+	return;
+  }
+  if (isFibonacciNumber(num)) console.log(`${num} is a Fibonacci number.`);
+  else console.log(`${num} is NOT a Fibonacci number.`);
+}
+
+function main() {
+  console.log('Choose part to run:\n1) Print first N terms\n2) Check number');
+  const choice = readlineSync.questionInt('Select (1-2): ');
+  if (choice === 1) partA();
+  else if (choice === 2) partB();
+  else console.log('Invalid choice.');
+}
+
+if (require.main === module) main();
