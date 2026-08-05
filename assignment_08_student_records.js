@@ -83,5 +83,63 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+const students = [];
 
+function addStudent() {
+  const name = readlineSync.question('Student name: ').trim();
+  const id = readlineSync.questionInt('Student ID: ');
+  const count = readlineSync.questionInt('How many scores? ');
+  const scores = [];
+  for (let i = 0; i < count; i++) {
+	const s = Number(readlineSync.question(`Enter score ${i + 1}: `));
+	scores.push(s);
+  }
+  students.push({ name, id, scores });
+  console.log(`Student "${name}" added successfully.`);
+}
+
+function displayAllStudents() {
+  if (students.length === 0) {
+	console.log('No students added yet.');
+	return;
+  }
+  console.log('Name | ID | Scores | Average');
+  for (const st of students) {
+	const avg = st.scores.length ? (st.scores.reduce((a, b) => a + b, 0) / st.scores.length).toFixed(2) : 'N/A';
+	console.log(`${st.name} | ${st.id} | ${st.scores.join(', ')} | ${avg}`);
+  }
+}
+
+function calculateAverageForStudent() {
+  const id = readlineSync.questionInt('Enter student ID: ');
+  const st = students.find(s => s.id === id);
+  if (!st) {
+	console.log('Error: student ID not found.');
+	return;
+  }
+  if (st.scores.length === 0) {
+	console.log(`${st.name} has no scores.`);
+	return;
+  }
+  const avg = (st.scores.reduce((a, b) => a + b, 0) / st.scores.length).toFixed(2);
+  console.log(`${st.name}'s average score: ${avg}`);
+}
+
+function main() {
+  while (true) {
+	console.log('\n===============================\n   STUDENT RECORD SYSTEM MENU\n===============================');
+	console.log('1. Add student\n2. Display all students\n3. Calculate average score\n4. Quit');
+	const choice = readlineSync.questionInt('Enter your choice (1-4): ');
+	if (choice === 1) addStudent();
+	else if (choice === 2) displayAllStudents();
+	else if (choice === 3) calculateAverageForStudent();
+	else if (choice === 4) {
+	  console.log('Goodbye!');
+	  break;
+	} else console.log('Invalid choice.');
+  }
+}
+
+if (require.main === module) main();
