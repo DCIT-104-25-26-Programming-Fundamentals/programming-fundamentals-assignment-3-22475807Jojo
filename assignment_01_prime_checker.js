@@ -41,5 +41,30 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+function isPrime(n) {
+  // Numbers less than 2 are not prime
+  if (n < 2) return false;
+  // 2 is prime
+  if (n === 2) return true;
+  // Even numbers greater than 2 are not prime
+  if (n % 2 === 0) return false;
+  // Test odd divisors up to sqrt(n)
+  const limit = Math.floor(Math.sqrt(n));
+  for (let i = 3; i <= limit; i += 2) {
+	if (n % i === 0) return false;
+  }
+  return true;
+}
 
+function main() {
+  const num = readlineSync.questionInt('Enter a number: ');
+  if (isPrime(num)) {
+	console.log(`${num} is a prime number.`);
+  } else {
+	console.log(`${num} is NOT a prime number.`);
+  }
+}
+
+if (require.main === module) main();
