@@ -73,5 +73,53 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+function add(a, b) { return a + b; }
+function subtract(a, b) { return a - b; }
+function multiply(a, b) { return a * b; }
+function divide(a, b) {
+  if (b === 0) throw new Error('DIV_ZERO');
+  return a / b;
+}
+function modulus(a, b) { return a % b; }
+function exponent(a, b) { return a ** b; }
 
+function getTwoNumbers() {
+  const a = Number(readlineSync.question('Enter first number : '));
+  const b = Number(readlineSync.question('Enter second number: '));
+  if (Number.isNaN(a) || Number.isNaN(b)) return null;
+  return [a, b];
+}
+
+function main() {
+  while (true) {
+	console.log('\n============================\n     SIMPLE CALCULATOR\n============================');
+	console.log('1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\n5. Modulus\n6. Exponentiation\n7. Quit');
+	const choice = readlineSync.questionInt('Select an operation (1-7): ');
+	if (choice === 7) { console.log('Goodbye!'); break; }
+	const nums = getTwoNumbers();
+	if (!nums) { console.log('Error: invalid number(s).'); continue; }
+	const [a, b] = nums;
+	try {
+	  let result;
+	  switch (choice) {
+		case 1: result = add(a, b); break;
+		case 2: result = subtract(a, b); break;
+		case 3: result = multiply(a, b); break;
+		case 4: result = divide(a, b); break;
+		case 5: result = modulus(a, b); break;
+		case 6: result = exponent(a, b); break;
+		default:
+		  console.log('Invalid choice.');
+		  continue;
+	  }
+	  console.log(`Result: ${a} ${choice === 1 ? '+' : choice === 2 ? '-' : choice === 3 ? '*' : choice === 4 ? '/' : choice === 5 ? '%' : '**'} ${b} = ${Number.isFinite(result) ? result.toFixed(2) : result}`);
+	} catch (err) {
+	  if (err.message === 'DIV_ZERO') console.log('Error: Cannot divide by zero.');
+	  else console.log('Error:', err.message);
+	}
+  }
+}
+
+if (require.main === module) main();
