@@ -58,5 +58,43 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+function printTableForNumber(n) {
+  console.log(`Multiplication Table for ${n}:`);
+  for (let i = 1; i <= 12; i++) {
+	const prod = n * i;
+	console.log(`${n}  x  ${i}  =  ${prod}`);
+  }
+}
 
+function partA() {
+  const num = Number(readlineSync.question('Enter a number: '));
+  if (!Number.isFinite(num)) {
+	console.log('Error: invalid number.');
+	return;
+  }
+  printTableForNumber(num);
+}
+
+function partB() {
+  const N = readlineSync.questionInt('Enter N (print tables 1..N): ');
+  if (N <= 0) {
+	console.log('Error: N must be a positive integer.');
+	return;
+  }
+  for (let k = 1; k <= N; k++) {
+	printTableForNumber(k);
+	if (k !== N) console.log('---------------------------');
+  }
+}
+
+function main() {
+  console.log('Choose part to run:\n1) Single table\n2) Tables 1..N');
+  const choice = readlineSync.questionInt('Select (1-2): ');
+  if (choice === 1) partA();
+  else if (choice === 2) partB();
+  else console.log('Invalid choice.');
+}
+
+if (require.main === module) main();
